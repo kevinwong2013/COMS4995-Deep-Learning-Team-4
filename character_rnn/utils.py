@@ -6,16 +6,16 @@ import tensorflow as tf
 from sklearn.linear_model import LogisticRegression
 
 
-def train_with_reg_cv(trX, trY, vaX, vaY, teX=None, teY=None, penalty='l1',
+def train_with_reg_cv(trX, trY, vaX, vaY, teX=None, teY=None, penalty='l2',
                       C=2 ** np.arange(-8, 1).astype(np.float), seed=42):
     scores = []
     for i, c in enumerate(C):
-        model = LogisticRegression(C=c, penalty=penalty, random_state=seed + i)
+        model = LogisticRegression(C=c, penalty=penalty, random_state=seed + i, solver='lbfgs')
         model.fit(trX, trY)
         score = model.score(vaX, vaY)
         scores.append(score)
     c = C[np.argmax(scores)]
-    model = LogisticRegression(C=c, penalty=penalty, random_state=seed + len(C))
+    model = LogisticRegression(C=c, penalty=penalty, random_state=seed + len(C), solver='lbfgs')
     model.fit(trX, trY)
     nnotzero = np.sum(model.coef_ != 0)
     if teX is not None and teY is not None:

@@ -17,19 +17,19 @@ teXt = char_rnn_model.transform(teX)
 full_rep_acc, c, nnotzero, char_rnn_model = train_with_reg_cv(trXt, trY, vaXt, vaY, teXt, teY)
 
 char_rnn_model_prediction = char_rnn_model.predict_proba(trXt)
-training_char_rnn_df = pd.DataFrame(list(zip(trXt, trY, char_rnn_model_prediction)),
-                                    columns=['sentence', 'sentiment', 'prediction'])
+char_rnn_model_prediction = [item[1] for item in char_rnn_model_prediction]
+training_char_rnn_df = pd.DataFrame(list(zip(trX, trY, char_rnn_model_prediction)),
+                                    columns=['sentence', 'sentiment', 'char_prediction'])
 
 char_rnn_model_prediction = char_rnn_model.predict_proba(vaXt)
-dev_char_rnn_df = pd.DataFrame(list(zip(teX, teY, char_rnn_model_prediction)),
-                               columns=['sentence', 'sentiment', 'prediction'])
+char_rnn_model_prediction = [item[1] for item in char_rnn_model_prediction]
+dev_char_rnn_df = pd.DataFrame(list(zip(vaX, vaY, char_rnn_model_prediction)),
+                               columns=['sentence', 'sentiment', 'char_prediction'])
 
 char_rnn_model_prediction = char_rnn_model.predict_proba(teXt)
+char_rnn_model_prediction = [item[1] for item in char_rnn_model_prediction]
 testing_char_rnn_df = pd.DataFrame(list(zip(teX, teY, char_rnn_model_prediction)),
-                                   columns=['sentence', 'sentiment', 'prediction'])
-
-stacked_df = pd.concat([testing_char_rnn_df, dev_char_rnn_df], ignore_index=True)
-print(stacked_df)
+                                   columns=['sentence', 'sentiment', 'char_prediction'])
 
 print('Performance of Character level RNN is:')
 print('%05.2f test accuracy' % full_rep_acc)

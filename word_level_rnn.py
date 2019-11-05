@@ -89,6 +89,10 @@ def run_prediction(prediction_ops, saver):
         return prediction_ary, label_ary, index_ary, sentence_ary
 
 
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+
 def main(_):
     print('starting')
     tf.logging.set_verbosity(tf.logging.INFO)
@@ -101,38 +105,45 @@ def main(_):
         prediction_ops, moving_averaged_variables = output
         saver = tf.train.Saver(moving_averaged_variables)
         prediction_ary, label_ary, index_ary, sentence_ary = run_prediction(prediction_ops, saver)
+        prediction_ary = sigmoid(prediction_ary)
         training_word_rnn_df = pd.DataFrame(list(zip(sentence_ary, label_ary, prediction_ary)),
                                             columns=['sentence', 'sentiment', 'prediction'])
-        print(training_word_rnn_df)
+
         training_word_rnn_df.drop_duplicates(subset=['sentence'], keep='first', inplace=True)
         print(training_word_rnn_df)
         training_word_rnn_df.to_pickle('training_word_rnn_df.pickle')
+        prediction_label = [i > 0.5 for i in prediction_ary]
+        print(accuracy_score(label_ary, prediction_label))
 
     elif dataset == 'valid':
         output = word_level_rnn.graphs.get_model().prediction_graph(dataset='valid')
         prediction_ops, moving_averaged_variables = output
         saver = tf.train.Saver(moving_averaged_variables)
         prediction_ary, label_ary, index_ary, sentence_ary = run_prediction(prediction_ops, saver)
+        prediction_ary = sigmoid(prediction_ary)
         dev_word_rnn_df = pd.DataFrame(list(zip(sentence_ary, label_ary, prediction_ary)),
                                        columns=['sentence', 'sentiment', 'prediction'])
-        print(dev_word_rnn_df)
+
         dev_word_rnn_df.drop_duplicates(subset=['sentence'], keep='first', inplace=True)
         print(dev_word_rnn_df)
         dev_word_rnn_df.to_pickle('dev_word_rnn_df.pickle')
+        prediction_label = [i > 0.5 for i in prediction_ary]
+        print(accuracy_score(label_ary, prediction_label))
 
     elif dataset == 'test':
         output = word_level_rnn.graphs.get_model().prediction_graph(dataset='test')
         prediction_ops, moving_averaged_variables = output
         saver = tf.train.Saver(moving_averaged_variables)
         prediction_ary, label_ary, index_ary, sentence_ary = run_prediction(prediction_ops, saver)
+        prediction_ary = sigmoid(prediction_ary)
         testing_word_rnn_df = pd.DataFrame(list(zip(sentence_ary, label_ary, prediction_ary)),
                                            columns=['sentence', 'sentiment', 'prediction'])
-        print(testing_word_rnn_df)
         testing_word_rnn_df.drop_duplicates(subset=['sentence'], keep='first', inplace=True)
+
         print(testing_word_rnn_df)
         testing_word_rnn_df.to_pickle('testing_word_rnn_df.pickle')
-
-    # print(accuracy_score(label_ary, prediction_ary))
+        prediction_label = [i > 0.5 for i in prediction_ary]
+        print(accuracy_score(label_ary, prediction_label))
 
 
 if __name__ == '__main__':
