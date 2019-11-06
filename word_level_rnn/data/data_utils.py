@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-"""Utilities for generating/preprocessing data for adversarial text models."""
+"""Utilities for generating/preprocessing imdb_raw_data for adversarial text models."""
 
 import operator
 import os

@@ -40,7 +40,7 @@ flags.DEFINE_integer('num_classes', 2, 'Number of classes for classification')
 flags.DEFINE_string('data_dir', 'word_level_rnn/tmp/imdb',
                     'Directory path to preprocessed text dataset.')
 flags.DEFINE_string('vocab_freq_path', None,
-                    'Path to pre-calculated vocab frequency data. If '
+                    'Path to pre-calculated vocab frequency imdb_raw_data. If '
                     'None, use FLAGS.data_dir/vocab_freq.txt.')
 flags.DEFINE_integer('batch_size', 1024, 'Size of the batch.')
 flags.DEFINE_integer('num_timesteps', 400, 'Number of timesteps for BPTT')

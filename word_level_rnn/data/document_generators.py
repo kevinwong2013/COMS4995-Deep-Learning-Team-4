@@ -31,7 +31,7 @@ from word_level_rnn.data import data_utils
 flags = tf.app.flags
 FLAGS = flags.FLAGS
 
-flags.DEFINE_string('dataset', 'imdb', 'Which dataset to generate data for')
+flags.DEFINE_string('dataset', 'imdb', 'Which dataset to generate imdb_raw_data for')
 
 # Preprocessing config
 flags.DEFINE_boolean('output_unigrams', True, 'Whether to output unigrams.')
@@ -76,10 +76,10 @@ def documents(dataset='train',
     """Generates Documents based on FLAGS.dataset.
 
   Args:
-    dataset: str, identifies folder within IMDB data directory, test or train.
+    dataset: str, identifies folder within IMDB imdb_raw_data directory, test or train.
     include_unlabeled: bool, whether to include the unsup directory. Only valid
       when dataset=train.
-    include_validation: bool, whether to include validation data.
+    include_validation: bool, whether to include validation imdb_raw_data.
 
   Yields:
     Document
@@ -163,10 +163,10 @@ def imdb_documents(dataset='train',
   Data from http://ai.stanford.edu/~amaas/data/sentiment/
 
   Args:
-    dataset: str, identifies folder within IMDB data directory, test or train.
+    dataset: str, identifies folder within IMDB imdb_raw_data directory, test or train.
     include_unlabeled: bool, whether to include the unsup directory. Only valid
       when dataset=train.
-    include_validation: bool, whether to include validation data.
+    include_validation: bool, whether to include validation imdb_raw_data.
 
   Yields:
     Document
@@ -246,11 +246,11 @@ def dbpedia_documents(dataset='train',
   Dataset linked to at https://github.com/zhangxiangxiao/Crepe.
 
   Args:
-    dataset: str, identifies the csv file within the DBpedia data directory,
+    dataset: str, identifies the csv file within the DBpedia imdb_raw_data directory,
       test or train.
     include_unlabeled: bool, unused.
-    include_validation: bool, whether to include validation data, which is a
-      randomly selected 10% of the data.
+    include_validation: bool, whether to include validation imdb_raw_data, which is a
+      randomly selected 10% of the imdb_raw_data.
 
   Yields:
     Document
@@ -268,7 +268,7 @@ def dbpedia_documents(dataset='train',
     with open(os.path.join(FLAGS.dbpedia_input_dir, dataset + '.csv')) as db_f:
         reader = csv.reader(db_f)
         for row in reader:
-            # 10% of the data is randomly held out
+            # 10% of the imdb_raw_data is randomly held out
             is_validation = random.randint(1, 10) == 1
             if is_validation and not include_validation:
                 continue
@@ -292,11 +292,11 @@ def rcv1_documents(dataset='train',
   http://www.ai.mit.edu/projects/jmlr/papers/volume5/lewis04a/lyrl2004_rcv1v2_README.htm
 
   Args:
-    dataset: str, identifies the csv file within the rcv1 data directory.
+    dataset: str, identifies the csv file within the rcv1 imdb_raw_data directory.
     include_unlabeled: bool, whether to include the unlab file. Only valid
       when dataset=train.
-    include_validation: bool, whether to include validation data, which is a
-      randomly selected 10% of the data.
+    include_validation: bool, whether to include validation imdb_raw_data, which is a
+      randomly selected 10% of the imdb_raw_data.
 
   Yields:
     Document
@@ -319,7 +319,7 @@ def rcv1_documents(dataset='train',
         with open(os.path.join(FLAGS.rcv1_input_dir, dset + '.csv')) as db_f:
             reader = csv.reader(db_f)
             for row in reader:
-                # 10% of the data is randomly held out
+                # 10% of the imdb_raw_data is randomly held out
                 is_validation = random.randint(1, 10) == 1
                 if is_validation and not include_validation:
                     continue
@@ -340,14 +340,14 @@ def rt_documents(dataset='train',
     """Generates Documents for the Rotten Tomatoes dataset.
 
   Dataset available at http://www.cs.cornell.edu/people/pabo/movie-review-data/
-  In this dataset, amazon reviews are used for the unlabeled data.
+  In this dataset, amazon reviews are used for the unlabeled imdb_raw_data.
 
   Args:
-    dataset: str, identifies the data subdirectory.
-    include_unlabeled: bool, whether to include the unlabeled data. Only valid
+    dataset: str, identifies the imdb_raw_data subdirectory.
+    include_unlabeled: bool, whether to include the unlabeled imdb_raw_data. Only valid
       when dataset=train.
-    include_validation: bool, whether to include validation data, which is a
-      randomly selected 10% of the data.
+    include_validation: bool, whether to include validation imdb_raw_data, which is a
+      randomly selected 10% of the imdb_raw_data.
 
   Yields:
     Document
@@ -376,7 +376,7 @@ def rt_documents(dataset='train',
         with open(filename) as rt_f:
             for content in rt_f:
                 if class_label is None:
-                    # Process Amazon Review data for unlabeled dataset
+                    # Process Amazon Review imdb_raw_data for unlabeled dataset
                     if content.startswith('review/text'):
                         yield Document(
                             content=content,
@@ -385,7 +385,7 @@ def rt_documents(dataset='train',
                             label=None,
                             add_tokens=False)
                 else:
-                    # 10% of the data is randomly held out for the validation set and
+                    # 10% of the imdb_raw_data is randomly held out for the validation set and
                     # another 10% of it is randomly held out for the test set
                     random_int = random.randint(1, 10)
                     is_validation = random_int == 1

@@ -15,11 +15,11 @@
 """Create TFRecord files of SequenceExample protos from dataset.
 
 Constructs 3 datasets:
-  1. Labeled data for the LSTM classification model, optionally with label gain.
+  1. Labeled imdb_raw_data for the LSTM classification model, optionally with label gain.
      "*_classification.tfrecords" (for both unidirectional and bidirectional
      models).
   2. Data for the unsupervised LM-LSTM model that predicts the next token.
-     "*_lm.tfrecords" (generates forward and reverse data).
+     "*_lm.tfrecords" (generates forward and reverse imdb_raw_data).
   3. Data for the unsupervised SA-LSTM model that uses Seq2Seq.
      "*_sa.tfrecords".
 """
@@ -41,7 +41,7 @@ data = data_utils
 flags = tf.app.flags
 FLAGS = flags.FLAGS
 
-# Flags for input data are in document_generators.py
+# Flags for input imdb_raw_data are in document_generators.py
 flags.DEFINE_string('vocab_file', 'tmp/imdb/vocab.txt', 'Path to the vocabulary file. Defaults '
                                       'to FLAGS.output_dir/vocab.txt.')
 flags.DEFINE_string('output_dir', 'tmp/imdb', 'Path to save tfrecords.')
@@ -100,9 +100,9 @@ def make_vocab_ids(vocab_filename):
 
 
 def generate_training_data(vocab_ids, writer_lm_all, writer_seq_ae_all):
-    """Generates training data."""
+    """Generates training imdb_raw_data."""
 
-    # Construct training data writers
+    # Construct training imdb_raw_data writers
     writer_lm = build_shuffling_tf_record_writer(data.TRAIN_LM)
     writer_seq_ae = build_shuffling_tf_record_writer(data.TRAIN_SA)
     writer_class = build_shuffling_tf_record_writer(data.TRAIN_CLASS)
@@ -160,8 +160,8 @@ def generate_training_data(vocab_ids, writer_lm_all, writer_seq_ae_all):
 
 
 def generate_test_data(vocab_ids, writer_lm_all, writer_seq_ae_all):
-    """Generates test data."""
-    # Construct test data writers
+    """Generates test imdb_raw_data."""
+    # Construct test imdb_raw_data writers
     writer_lm = build_shuffling_tf_record_writer(data.TEST_LM)
     writer_rev_lm = build_shuffling_tf_record_writer(data.TEST_REV_LM)
     writer_seq_ae = build_shuffling_tf_record_writer(data.TEST_SA)
@@ -209,10 +209,10 @@ def main(_):
 
     with build_shuffling_tf_record_writer(data.ALL_LM) as writer_lm_all:
         with build_shuffling_tf_record_writer(data.ALL_SA) as writer_seq_ae_all:
-            tf.logging.info('Generating training data...')
+            tf.logging.info('Generating training imdb_raw_data...')
             generate_training_data(vocab_ids, writer_lm_all, writer_seq_ae_all)
 
-            tf.logging.info('Generating test data...')
+            tf.logging.info('Generating test imdb_raw_data...')
             generate_test_data(vocab_ids, writer_lm_all, writer_seq_ae_all)
 
 

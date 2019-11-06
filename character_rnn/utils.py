@@ -32,11 +32,11 @@ def load_sst(path):
     return X, Y
 
 
-def sst_binary(data_dir='character_rnn/data/'):
+def sst_binary(data_dir='character_rnn/imdb_raw_data/'):
     """
     Most standard models make use of a preprocessed/tokenized/lowercased version
     of Stanford Sentiment Treebank. Our model extracts features from a version
-    of the dataset using the raw text instead which we've included in the data
+    of the dataset using the raw text instead which we've included in the imdb_raw_data
     folder.
     """
     trX, trY = load_sst(os.path.join(data_dir, 'train_binary_sent.csv'))

@@ -143,14 +143,14 @@ def _filenames_for_data_spec(phase, bidir, pretrain, use_seq2seq):
     phase: str, 'train', 'test', or 'valid'.
     bidir: bool, bidirectional model.
     pretrain: bool, pretraining or classification.
-    use_seq2seq: bool, seq2seq data, only valid if pretrain=True.
+    use_seq2seq: bool, seq2seq imdb_raw_data, only valid if pretrain=True.
 
   Returns:
     Tuple of filenames.
 
   Raises:
     ValueError: if an invalid combination of arguments is provided that does not
-      map to any data files (e.g. pretrain=False, use_seq2seq=True).
+      map to any imdb_raw_data files (e.g. pretrain=False, use_seq2seq=True).
   """
     data_spec = (phase, bidir, pretrain, use_seq2seq)
     data_specs = {
@@ -288,8 +288,8 @@ def inputs(data_dir=None,
     data_dir: str, directory containing TFRecord files of SequenceExample.
     phase: str, dataset for evaluation {'train', 'valid', 'test'}.
     bidir: bool, bidirectional LSTM.
-    pretrain: bool, whether to read pretraining data or classification data.
-    use_seq2seq: bool, whether to read seq2seq data or the language model data.
+    pretrain: bool, whether to read pretraining imdb_raw_data or classification imdb_raw_data.
+    use_seq2seq: bool, whether to read seq2seq imdb_raw_data or the language model imdb_raw_data.
     state_name: string, key for saved state of LSTM.
     state_size: int, size of LSTM state.
     num_layers: int, the number of LSTM layers.
@@ -305,7 +305,7 @@ def inputs(data_dir=None,
 
         if bidir and pretrain:
             # Bidirectional pretraining
-            # Requires separate forward and reverse language model data.
+            # Requires separate forward and reverse language model imdb_raw_data.
             forward_fname, reverse_fname = filenames
             forward_batch = _read_and_batch(data_dir, forward_fname, state_name,
                                             state_size, num_layers, unroll_steps,
@@ -328,7 +328,7 @@ def inputs(data_dir=None,
 
         elif bidir:
             # Classifier bidirectional LSTM
-            # Shared data source, but separate token/state streams
+            # Shared imdb_raw_data source, but separate token/state streams
             fname, = filenames
             batch = _read_and_batch(
                 data_dir,
@@ -385,8 +385,8 @@ def make_prediction_inputs(data_dir=None,
     data_dir: str, directory containing TFRecord files of SequenceExample.
     phase: str, dataset for evaluation {'train', 'valid', 'test'}.
     bidir: bool, bidirectional LSTM.
-    pretrain: bool, whether to read pretraining data or classification data.
-    use_seq2seq: bool, whether to read seq2seq data or the language model data.
+    pretrain: bool, whether to read pretraining imdb_raw_data or classification imdb_raw_data.
+    use_seq2seq: bool, whether to read seq2seq imdb_raw_data or the language model imdb_raw_data.
     state_name: string, key for saved state of LSTM.
     state_size: int, size of LSTM state.
     num_layers: int, the number of LSTM layers.
