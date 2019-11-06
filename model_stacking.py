@@ -36,9 +36,9 @@ training_df = pd.merge(training_char_rnn_df, training_word_rnn_df, how='inner', 
 dev_df = pd.merge(dev_char_rnn_df, dev_word_rnn_df, how='inner', on=['sentence', 'sentiment'])
 test_df = pd.merge(testing_char_rnn_df, testing_word_rnn_df, how='inner', on=['sentence', 'sentiment'])
 
-# print(training_df)
-# print(dev_df)
-# print(test_df)
+print(training_df)
+print(dev_df)
+print(test_df)
 
 full_rep_acc, c, nnotzero, stacked_model = train_model_stacking(
     training_df[['prediction', 'char_prediction']].to_numpy(), training_df['sentiment'].to_numpy(),

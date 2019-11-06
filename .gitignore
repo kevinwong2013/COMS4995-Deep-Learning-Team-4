@@ -4,9 +4,3 @@
 /imdb_raw_data/
 /character_rnn/data/
 /character_rnn/model/
-/testing_char_rnn_df.pickle
-/testing_word_rnn_df.pickle
-/training_char_rnn_df.pickle
-/training_word_rnn_df.pickle
-/dev_char_rnn_df.pickle
-/dev_word_rnn_df.pickle
