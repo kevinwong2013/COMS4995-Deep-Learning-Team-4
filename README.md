@@ -1,7 +1,7 @@
 # COMS4995-Deep-Learning-Team-4
 Code based on:
-Character level RNN: https://github.com/openai/generating-reviews-discovering-sentiment
-Word level RNN with adverserial training: https://github.com/tensorflow/models/tree/master/research/adversarial_text
+* Character level RNN: https://github.com/openai/generating-reviews-discovering-sentiment
+* Word level RNN with adverserial training: https://github.com/tensorflow/models/tree/master/research/adversarial_text
 ## Requirements
 
 * TensorFlow >= v1.3
