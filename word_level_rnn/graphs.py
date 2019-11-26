@@ -64,7 +64,7 @@ flags.DEFINE_bool('use_seq2seq_autoencoder', False,
 
 # Vocabulary and embeddings
 flags.DEFINE_integer('embedding_dims', 256, 'Dimensions of embedded vector.')
-flags.DEFINE_integer('vocab_size', 87007,
+flags.DEFINE_integer('vocab_size', 53787,
                      'The size of the vocaburary. This value '
                      'should be exactly same as the number of the '
                      'vocabulary used in dataset. Because the last '

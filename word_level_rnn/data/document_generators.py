@@ -37,7 +37,7 @@ flags.DEFINE_string('dataset', 'imdb', 'Which dataset to generate imdb_raw_data 
 flags.DEFINE_boolean('output_unigrams', True, 'Whether to output unigrams.')
 flags.DEFINE_boolean('output_bigrams', False, 'Whether to output bigrams.')
 flags.DEFINE_boolean('output_char', False, 'Whether to output characters.')
-flags.DEFINE_boolean('lowercase', False, 'Whether to lowercase document terms.')
+flags.DEFINE_boolean('lowercase', True, 'Whether to lowercase document terms.')
 
 # IMDB
 flags.DEFINE_string('imdb_input_dir', 'tmp/aclImdb', 'The input directory containing the '
@@ -179,10 +179,11 @@ def imdb_documents(dataset='train',
         raise ValueError('Must provide FLAGS.imdb_input_dir')
 
     tf.logging.info('Generating IMDB documents...')
-    dev_df = pd.read_csv(os.path.join(FLAGS.imdb_input_dir, 'dev.csv'), encoding='utf_8')
+    #dev_df = pd.read_csv(os.path.join(FLAGS.imdb_input_dir, 'dev.csv'), encoding='utf_8')
 
     if dataset == 'train':
-        train_df = pd.read_csv(os.path.join(FLAGS.imdb_input_dir, 'train.csv'), encoding='utf_8')
+        train_df = pd.read_excel(os.path.join(FLAGS.imdb_input_dir, 'IMDb_train_new.xlsx'), sheet_name='IMDb_train_new')
+        train_df.dropna(axis=0, how='any', inplace=True)
         for index, row in train_df.iterrows():
             is_validation = False
             if row['label'] == 0:
@@ -196,6 +197,7 @@ def imdb_documents(dataset='train',
                 label=class_label,
                 add_tokens=True)
 
+        """
         for index, row in dev_df.iterrows():
             is_validation = True
             if row['label'] == 0:
@@ -208,9 +210,11 @@ def imdb_documents(dataset='train',
                 is_test=False,
                 label=class_label,
                 add_tokens=True)
+        """
 
     if dataset == 'test':
-        test_df = pd.read_csv(os.path.join(FLAGS.imdb_input_dir, 'test.csv'), encoding='utf_8')
+        test_df = pd.read_excel(os.path.join(FLAGS.imdb_input_dir, 'IMDb_test_new.xlsx'), sheet_name='IMDb_test_new')
+        test_df.dropna(axis=0, how='any', inplace=True)
         for index, row in test_df.iterrows():
             is_validation = False
             if row['label'] == 0:
@@ -224,6 +228,7 @@ def imdb_documents(dataset='train',
                 label=class_label,
                 add_tokens=True)
 
+        """
         for index, row in dev_df.iterrows():
             is_validation = True
             if row['label'] == 0:
@@ -236,6 +241,7 @@ def imdb_documents(dataset='train',
                 is_test=False,
                 label=class_label,
                 add_tokens=True)
+        """
 
 
 def dbpedia_documents(dataset='train',

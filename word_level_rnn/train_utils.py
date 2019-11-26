@@ -65,7 +65,7 @@ def run_training(train_op,
     sv = tf.train.Supervisor(
         logdir=FLAGS.train_dir,
         is_chief=is_chief,
-        save_summaries_secs=30,
+        save_summaries_secs=450,
         save_model_secs=900,
         local_init_op=local_init_op,
         ready_for_local_init_op=ready_for_local_init_op,
@@ -120,7 +120,7 @@ def train_step(sess, train_op, loss, global_step):
     duration = time.time() - start_time
 
     # Logging
-    if global_step_val % 10 == 0:
+    if global_step_val % 100 == 0:
         examples_per_sec = FLAGS.batch_size / duration
         sec_per_batch = float(duration)
 

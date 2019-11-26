@@ -43,6 +43,15 @@ print('%05d features used' % nnotzero)
 #plt.legend()
 #plt.show()
 
+import os
+data = pd.read_csv('character_rnn/data/imdb_ZSL_prediction_result.csv', encoding='cp1250')
+data = data.dropna()
+#data = data[:500]
+print('Length of data after dropna is ', len(data))
+data['sentiment'] = char_rnn_model_prediction
+data.to_csv('imdb_ZSL_prediction_with_sentiment.csv')
+
 training_char_rnn_df.to_pickle('training_char_rnn_df.pickle')
 dev_char_rnn_df.to_pickle('dev_char_rnn_df.pickle')
-testing_char_rnn_df.to_pickle('testing_char_rnn_df.pickle')
+#testing_char_rnn_df.to_pickle('testing_char_rnn_df.pickle')
+testing_char_rnn_df.to_excel('ZSL_character_RNN_sentiement', engine='xlsxwriter')

@@ -43,7 +43,7 @@ flags.DEFINE_integer('doc_count_threshold', 1, 'The minimum number of '
                                                'documents a word or bigram should occur in to keep '
                                                'it in the vocabulary.')
 
-MAX_VOCAB_SIZE = 100 * 1000
+MAX_VOCAB_SIZE = 1000 * 100
 
 
 def fill_vocab_from_doc(doc, vocab_freqs, doc_counts):
@@ -96,6 +96,7 @@ def main(_):
     tf.gfile.MakeDirs(FLAGS.output_dir)
     data_utils.write_vocab_and_frequency(ordered_vocab_freqs, FLAGS.output_dir)
 
+    print('finish')
 
 if __name__ == '__main__':
     tf.app.run()

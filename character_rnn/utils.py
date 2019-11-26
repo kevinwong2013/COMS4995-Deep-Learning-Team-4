@@ -26,13 +26,20 @@ def train_with_reg_cv(trX, trY, vaX, vaY, teX=None, teY=None, penalty='l2',
 
 
 def load_sst(path):
-    data = pd.read_csv(path)
+    try:
+        data = pd.read_csv(path)
+    except:
+        data = pd.read_csv(path, encoding='cp1250')
+        print(data['sentence'])
+    print('Length of data before dropna is ', len(data))
+    data = data.dropna()
+    print('Length of data after dropna is ', len(data))
     X = data['sentence'].values.tolist()
     Y = data['label'].values
     return X, Y
 
 
-def sst_binary(data_dir='character_rnn/imdb_raw_data/'):
+def sst_binary(data_dir='character_rnn/data/'):
     """
     Most standard models make use of a preprocessed/tokenized/lowercased version
     of Stanford Sentiment Treebank. Our model extracts features from a version
@@ -41,7 +48,11 @@ def sst_binary(data_dir='character_rnn/imdb_raw_data/'):
     """
     trX, trY = load_sst(os.path.join(data_dir, 'train_binary_sent.csv'))
     vaX, vaY = load_sst(os.path.join(data_dir, 'dev_binary_sent.csv'))
-    teX, teY = load_sst(os.path.join(data_dir, 'test_binary_sent.csv'))
+    #teX, teY = load_sst(os.path.join(data_dir, 'test_binary_sent.csv'))
+    teX, teY = load_sst(os.path.join(data_dir, 'imdb_ZSL_prediction_result.csv'))
+    #teX = teX[:500]
+    #teY = teY[:500]
+    print (len(teX), len(teY))
     return trX, vaX, teX, trY, vaY, teY
 
 
@@ -51,10 +62,13 @@ def find_trainable_variables(key):
 
 
 def preprocess(text, front_pad='\n ', end_pad=' '):
-    text = html.unescape(text)
-    text = text.replace('\n', ' ').strip()
-    text = front_pad + text + end_pad
-    text = text.encode()
+    try:
+        text = html.unescape(text)
+        text = text.replace('\n', ' ').strip()
+        text = front_pad + text + end_pad
+        text = text.encode()
+    except:
+        print(text)
     return text
 
 

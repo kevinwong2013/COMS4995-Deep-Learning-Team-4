@@ -23,7 +23,7 @@ flags.DEFINE_string('eval_dir', 'word_level_rnn/tmp/models/imdb_eval',
 flags.DEFINE_string('eval_data', 'test', 'Specify which dataset is used. '
                                          '("train", "valid", "test") ')
 flags.DEFINE_bool('run_once', True, 'Whether to run eval only once.')
-flags.DEFINE_integer('num_examples', 10240, 'Number of examples to run.')
+flags.DEFINE_integer('num_examples', 20480, 'Number of examples to run.')
 flags.DEFINE_string('master', '',
                     'BNS name prefix of the Tensorflow eval master, '
                     'or "local".')
